@@ -1,0 +1,119 @@
+
+labs-open:
+  dev:
+    mysql: 127.0.0.1
+
+spring:
+  profiles: dev
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+  aop:
+    auto: false
+    proxy-target-class: false
+  jmx:
+    default-domain: ${spring.application.name}
+  liquibase:
+    enabled: false
+  mvc:
+    favicon:
+      enabled: false
+  security:
+    user:
+      name: admin
+      password: adminto
+    filter:
+      dispatcher-types: REQUEST,FORWARD,ASYNC
+  datasource:
+    druid:
+      # 主库数据源
+      url: jdbc:mysql://${labs-open.dev.mysql}:3306/flowable-study?useUnicode=true&useSSL=false&characterEncoding=utf8&zeroDateTimeBehavior&nullCatalogMeansCurrent=true
+      username: root
+      password: "adminto"
+      driver-class-name: com.mysql.jdbc.Driver
+      db-type: com.alibaba.druid.pool.DruidDataSource
+      initial-size: 5
+      max-active: 10
+      min-idle: 5
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      timeBetweenEvictionRunsMillis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: test
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        slf4j:
+          statement-executable-sql-log-enable: true
+flowable:
+  activityFontName: 宋体
+  annotationFontName: 宋体
+  common:
+    app:
+      idm-url: http://127.0.0.1:${server.port}${server.servlet.context-path}/idm
+      role-prefix: ''
+      idm-admin:
+        user: admin
+        password: test
+  database-schema-update: true
+  idm:
+    app:
+      admin:
+        first-name: admin
+        last-name: admin
+        password: test
+        user-id: admin
+  labelFontName: 宋体
+  modeler:
+    app:
+      rest-enabled: true
+      deployment-api-url: http://127.0.0.1:${server.port}${server.servlet.context-path}/app-api
+  process:
+    definition-cache-limit: 1
+  rest:
+    app:
+      authentication-mode: verify-privilege
+  rest-api-enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: when_authorized
+      roles: access-admin
+      enabled: true
+  health:
+    ldap:
+      enabled: false
+mybatis:
+  config-location: classpath:/META-INF/mybatis-config.xml
+  configuration-properties:
+    blobType: BLOB
+    boolValue: true
+    prefix: ''
+  mapper-locations: classpath:/META-INF/modeler-mybatis-mappings/*.xml
+
+server:
+  port: 9001
+  servlet:
+    context-path: /test
+  tomcat:
+    uri-encoding: UTF-8
+
+center:
+  port: 8888
